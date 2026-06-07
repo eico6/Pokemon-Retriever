@@ -1,10 +1,12 @@
 import requests
 
 API_URL = "https://pokeapi.co/api/v2/pokemon/"
+REQUEST_TIMEOUT = 10
 
 
-def get_pokemon(name):
-    response = requests.get(API_URL + name.lower(), timeout=10)
+def get_pokemon(name: str) -> dict | None:
+    """Fetch Pokémon data from PokéAPI. Returns None if not found."""
+    response = requests.get(API_URL + name.lower(), timeout=REQUEST_TIMEOUT)
 
     if response.status_code == 404:
         return None
@@ -13,25 +15,27 @@ def get_pokemon(name):
     return response.json()
 
 
-def print_pokemon(pokemon):
+def print_pokemon(pokemon: dict) -> None:
+    """Print Pokémon information in a pretty format."""
     name = pokemon["name"].capitalize()
     weight = pokemon["weight"]
     height = pokemon["height"]
     base_experience = pokemon["base_experience"]
 
     print()
-    print("╔══════════════════════════════╗")
-    print("║        Pokémon Found!        ║")
-    print("╠══════════════════════════════╣")
+    print(f"╔══════════════════════════════╗")
+    print(f"║        Pokémon Found!        ║")
+    print(f"╠══════════════════════════════╣")
     print(f"║ Name            : {name:<10} ║")
     print(f"║ Weight          : {weight:<10} ║")
     print(f"║ Height          : {height:<10} ║")
     print(f"║ Base experience : {base_experience:<10} ║")
-    print("╚══════════════════════════════╝")
+    print(f"╚══════════════════════════════╝")
     print()
 
 
-def main():
+def main() -> None:
+    """Run the application."""
     print("================================")
     print("        Pokémon Retriever       ")
     print("================================")
