@@ -20,3 +20,9 @@ Run the application:
 ```bash
 python src/main.py
 ```
+
+## Future improvements
+
+- Add tests to verify API error handling
+- Add a command for listing available Pokémon names
+- Show each Pokémon’s type, with terminal colors matching the type

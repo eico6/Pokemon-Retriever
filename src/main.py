@@ -6,8 +6,9 @@ REQUEST_TIMEOUT = 10
 
 def get_pokemon(name: str) -> dict | None:
     """Fetch Pokémon data from PokéAPI. Returns None if not found."""
-    response = requests.get(API_URL + name.lower(), timeout=REQUEST_TIMEOUT)
+    response = requests.get(API_URL + name, timeout=REQUEST_TIMEOUT)
 
+    # 404 = NOT FOUND
     if response.status_code == 404:
         return None
 
@@ -18,8 +19,8 @@ def get_pokemon(name: str) -> dict | None:
 def print_pokemon(pokemon: dict) -> None:
     """Print Pokémon information in a pretty format."""
     name = pokemon["name"].capitalize()
-    weight = pokemon["weight"] / 10 # hectorgram -> kg
-    height = pokemon["height"] / 10 # decimeter  -> meter
+    weight = pokemon["weight"] / 10 # hectorgrams -> kg
+    height = pokemon["height"] / 10 # decimeters  -> meters
     base_experience = pokemon["base_experience"]
     
     print()
@@ -36,6 +37,8 @@ def print_pokemon(pokemon: dict) -> None:
 
 def main() -> None:
     """Run the application."""
+    cache: dict[str, dict | None] = {}
+
     print("================================")
     print("        Pokémon Retriever       ")
     print("================================")
@@ -44,9 +47,9 @@ def main() -> None:
     print()
 
     while True:
-        name = input("Enter Pokémon name: ").strip()
+        name = input("Enter Pokémon name: ").strip().lower()
 
-        if name.lower() == "quit":
+        if name == "quit":
             print("\nGoodbye! 👋")
             break
 
@@ -55,7 +58,12 @@ def main() -> None:
             continue
 
         try:
-            pokemon = get_pokemon(name)
+            if name in cache:
+                print("\nℹ️  Loaded from cache.")
+                pokemon = cache[name]
+            else:
+                pokemon = get_pokemon(name)
+                cache[name] = pokemon
 
             if pokemon is None:
                 print("\n❌ Pokémon not found. Try another name.\n")
