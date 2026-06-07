@@ -18,17 +18,17 @@ def get_pokemon(name: str) -> dict | None:
 def print_pokemon(pokemon: dict) -> None:
     """Print Pokémon information in a pretty format."""
     name = pokemon["name"].capitalize()
-    weight = pokemon["weight"]
-    height = pokemon["height"]
+    weight = pokemon["weight"] / 10 # hectorgram -> kg
+    height = pokemon["height"] / 10 # decimeter  -> meter
     base_experience = pokemon["base_experience"]
-
+    
     print()
     print(f"╔══════════════════════════════╗")
     print(f"║        Pokémon Found!        ║")
     print(f"╠══════════════════════════════╣")
     print(f"║ Name            : {name:<10} ║")
-    print(f"║ Weight          : {weight:<10} ║")
-    print(f"║ Height          : {height:<10} ║")
+    print(f"║ Weight          : {str(weight) + ' kg':<10} ║")
+    print(f"║ Height          : {str(height) + ' m':<10} ║")
     print(f"║ Base experience : {base_experience:<10} ║")
     print(f"╚══════════════════════════════╝")
     print()
